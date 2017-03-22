@@ -17,6 +17,7 @@ class Presidente {
     private int currentLeader = 0;
     private boolean leaderUp = true;
     private int topCard = 1;
+    private int cardCount = 1;
     private Scanner scanner = new Scanner(System.in);
 
     Presidente() {
@@ -50,6 +51,7 @@ class Presidente {
     private void turn() {
         if (currentUp == currentLeader && !leaderUp) { // If it's back to the leader again
             topCard = 1;
+            cardCount = 0;
             currentUp = nextLeader;
             currentLeader = nextLeader;
             leaderUp = true;
@@ -60,10 +62,10 @@ class Presidente {
         if (leaderUp) { // If it's the leader's first turn
             leaderUp = false;
             System.out.println("You may play any card(s)");
-            topCard = deck.numericValue(getInput(players[currentUp], true));
+            getInput(players[currentUp], true);
         } else { // If it's a normal turn
-            System.out.println("You may play any card higher than " + deck.nameOfValue(topCard));
-            topCard = deck.numericValue(getInput(players[currentUp], false));
+            System.out.println("You must play " + Integer.toString(cardCount) + " card(s) higher than " + deck.nameOfValue(topCard));
+            getInput(players[currentUp], false);
         }
         winnerExists = checkWin();
         if (currentUp >= players.length - 1) { // -1 is for arrays
@@ -83,30 +85,53 @@ class Presidente {
         return false;
     }
 
-    private String getInput(Hand player, boolean isFirst) {
-        boolean cardNotFound = true;
-        String toReturn = "";
-        while (cardNotFound) {
-            toReturn = scanner.nextLine().toUpperCase();
-            if (toReturn.equals("SKIP")) {
-                cardNotFound = false;
-            } else {
-                if (player.getHand().contains(toReturn)) {
-                    if (deck.numericValue(toReturn) > topCard || isFirst) {
-                        nextLeader = currentUp;
-                        player.discard(toReturn);
-                        cardNotFound = false;
-                        topCard = deck.numericValue(toReturn);
-                    } else {
-                        System.out.println("Card too low");
-                    }
+    private void getInput(Hand player, boolean isFirst) { // TODO: implement in Hand class
+        boolean errorFound;
+        String[] inputs;
+        do {
+            errorFound = false;
+            int previousValue = 0;
+            inputs = scanner.nextLine().toUpperCase().split(" ");
+            if (isFirst) { // If leader, then they get to set the card count
+                cardCount = inputs.length;
+            }
+            for (String card: inputs) {
+                if (card.equals("SKIP")) {
+                    return;
                 } else {
-                    System.out.println("Card not found, try again.");
+                    if (inputs.length == cardCount) {
+                        if (player.getHand().contains(card)) {
+                            if (previousValue == 0 || deck.numericValue(card) == previousValue) {
+                                if (deck.numericValue(card) > topCard || isFirst) {
+                                    previousValue = deck.numericValue(card);
+                                } else {
+                                    errorFound = true;
+                                    System.out.println("Card(s) too low");
+                                    break;
+                                }
+                            } else {
+                                errorFound = true;
+                                System.out.println("Card(s) do not match");
+                                break;
+                            }
+                        } else {
+                            errorFound = true;
+                            System.out.println("Card(s) not found");
+                            break;
+                        }
+                    } else {
+                        errorFound = true;
+                        System.out.println("Incorrect card count");
+                        break;
+                    }
                 }
             }
+        } while (errorFound);
+        // We know that they didn't skip, and that the input is valid
+        for (String card: inputs) {
+            topCard = deck.numericValue(card);
+            nextLeader = currentUp;
+            player.discard(card);
         }
-        return toReturn;
     }
-
-
 }
