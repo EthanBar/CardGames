@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Presidente {
+class Presidente {
 
     /* Game of El Presidente
     Note that this class is entirely static
@@ -9,17 +9,17 @@ public class Presidente {
     show more OOP related concepts.
      */
 
-    private static Hand[] players;
-    private static Deck deck;
-    private static boolean winnerExists = false;
-    private static int currentUp = 0;
-    private static int nextLeader = 0;
-    private static int currentLeader = 0;
-    private static boolean leaderUp = true;
-    private static int topCard = 1;
-    private static Scanner scanner = new Scanner(System.in);
+    private Hand[] players;
+    private Deck deck;
+    private boolean winnerExists = false;
+    private int currentUp = 0;
+    private int nextLeader = 0;
+    private int currentLeader = 0;
+    private boolean leaderUp = true;
+    private int topCard = 1;
+    private Scanner scanner = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    Presidente() {
         deck = new Deck();
         System.out.println("Welcome to El Presidente! How many players are playing?");
         int playerCount = 0;
@@ -47,7 +47,7 @@ public class Presidente {
         }
     }
 
-    private static void turn() {
+    private void turn() {
         if (currentUp == currentLeader && !leaderUp) { // If it's back to the leader again
             topCard = 1;
             currentUp = nextLeader;
@@ -73,7 +73,7 @@ public class Presidente {
         }
     }
 
-    private static boolean checkWin() {
+    private boolean checkWin() {
         for (int handNo = 0; handNo < players.length; handNo++) {
             if (players[handNo].getHand().isEmpty()) {
                 System.out.println("Player " + Integer.toString(handNo) + " wins!");
@@ -83,7 +83,7 @@ public class Presidente {
         return false;
     }
 
-    static private String getInput(Hand player, boolean isFirst) {
+    private String getInput(Hand player, boolean isFirst) {
         boolean cardNotFound = true;
         String toReturn = "";
         while (cardNotFound) {
