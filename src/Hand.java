@@ -1,10 +1,12 @@
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Scanner;
 
 class Hand {
 
     private Deck deck;
     private ArrayList<String> hand = new ArrayList<>();
+    private Scanner scanner = new Scanner(System.in);
 
     Hand(Deck deck){
         this.deck = deck;
@@ -54,5 +56,16 @@ class Hand {
             }
         });
     }
+//
+//    String[] getInput(int minCard, boolean mustMatch){
+//        String[] inputs;
+//        boolean noError = true;
+//        do {
+//            noError = true;
+//            inputs = scanner.nextLine().toUpperCase().split(" ");
+//
+//        } while (!noError);
+//        return inputs;
+//    }
 
 }

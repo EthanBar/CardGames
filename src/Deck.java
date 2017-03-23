@@ -5,16 +5,12 @@ class Deck {
 
     private ArrayList<String> drawPile = new ArrayList<>();
     ArrayList<String> discardPile = new ArrayList<>();
-    private String[] suits = {"S", "C", "D", "H"};
-    private String[] numbers = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
     private static Random ram = new Random();
 
     Deck(){
-        populateDeck();
-    }
-
-    private void populateDeck(){
+        String[] suits = {"S", "C", "D", "H"};
         for (String suit: suits){
+            String[] numbers = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
             for (String number: numbers){
                 drawPile.add(suit + number);
             }

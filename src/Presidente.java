@@ -24,7 +24,6 @@ class Presidente {
         deck = new Deck();
         System.out.println("Welcome to El Presidente! How many players are playing?");
         int playerCount = 0;
-        System.out.print("\033[H\033[2J");
         boolean firstAsk = true;
         while (playerCount < 2) {
             if (!firstAsk) {
@@ -86,6 +85,7 @@ class Presidente {
     }
 
     private void getInput(Hand player, boolean isFirst) { // TODO: implement in Hand class
+//        String[] inputsv2 = players[currentUp].getInput(topCard, true);
         boolean errorFound;
         String[] inputs;
         do {
